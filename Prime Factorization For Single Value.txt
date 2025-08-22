@@ -1,0 +1,14 @@
+// O(Root N)
+void primeFactorization(int n, map<int, int> &m1)
+{
+    for (int i = 2; i * i <= n; ++i)
+    {
+        while (n % i == 0)
+        {
+            m1[i]++;
+            n /= i;
+        }
+    }
+    if (n > 1)
+        m1[n]++;
+}

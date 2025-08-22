@@ -1,0 +1,42 @@
+// Function to perform DFS and check for cycles in the directed graph
+bool dfsCheck(int node, vector<int> adj[], bool vis[], bool pathVis[])
+{
+    vis[node] = true;
+    pathVis[node] = true;
+
+    // Traverse adjacent nodes
+    for (auto it : adj[node])
+    {
+        // When the node is not visited
+        if (!vis[it])
+        {
+            if (dfsCheck(it, adj, vis, pathVis))
+                return true;
+        }
+        // If the node has been previously visited but it has to be visited on the same path
+        else if (pathVis[it])
+        {
+            return true; // there is a cycle
+        }
+    }
+
+    pathVis[node] = false;
+    return false; // if there is no cycle
+}
+
+// Function to detect cycle in a directed graph
+bool isCyclic(int V, vector<int> adj[])
+{
+    bool vis[V] = {false};     // Array to track visited nodes
+    bool pathVis[V] = {false}; // Array to track visited nodes on the current path
+
+    for (int i = 0; i < V; i++)
+    {
+        if (!vis[i])
+        {
+            if (dfsCheck(i, adj, vis, pathVis))
+                return true;
+        }
+    }
+    return false;
+}

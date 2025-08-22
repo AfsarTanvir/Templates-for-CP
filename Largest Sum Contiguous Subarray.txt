@@ -1,0 +1,18 @@
+long long LargestSumContiguousSubarray(ll ar[], ll arraySize, ll &subarrayStart, ll &subarrayEnd){
+    long long sum=0, mx = LLONG_MIN, start=-1;
+    for(int i=0; i<arraySize; ++i){
+        if(sum==0){
+            start = i;
+        }
+        sum += ar[i];
+        if(mx<sum){
+            mx = sum;
+            subarrayStart = start;
+            subarrayEnd = i;
+        }
+        if(sum<0){
+            sum=0;
+        }
+    }
+    return mx;
+}

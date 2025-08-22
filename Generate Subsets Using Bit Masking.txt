@@ -1,0 +1,15 @@
+vector<vector<ll>> subsets(vector<ll> &numbers_){
+    ll n = numbers_.size();
+    ll subset_cnt = (1<<n);
+    vector<vector<ll>> all_subsets;
+    for(int mask = 0; mask<subset_cnt; ++mask){
+        vector<ll> subset;
+        for(int i=0; i<n; ++i){
+            if((mask&(1<<i)) != 0){
+                subset.push_back(numbers_[i]);
+            }
+        }
+        all_subsets.push_back(subset);
+    }
+    return all_subsets;
+}

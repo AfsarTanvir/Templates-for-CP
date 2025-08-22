@@ -1,0 +1,17 @@
+void insertTrie(string s1){
+    struct Trie *cur = root;
+    for(char &c: s1){
+        int index = c-'0';
+        if(cur->isend) flag = false;
+        if(!cur->children[index]){
+            cur->children[index] = new Trie;
+        }
+        cur = cur->children[index];
+    }
+    cur->isend = true;
+    for(int i=0; i<10; ++i){
+        if(cur->children[i]){
+            flag = false;
+        }
+    }
+}

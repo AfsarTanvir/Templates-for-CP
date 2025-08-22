@@ -1,0 +1,32 @@
+// Diameter Of Tree
+// diameterOfTree(v1)
+int mx = 1, node = 1;
+void dfs(int i, int depth, bool vis[], int dis[], vector<vector<int>> &adj)
+{
+    vis[i] = true;
+    dis[i] = depth;
+    if (depth > mx)
+    {
+        mx = depth;
+        node = i;
+    }
+    for (auto &c : adj[i])
+    {
+        if (!vis[c])
+            dfs(c, depth + 1, vis, dis, adj);
+    }
+}
+int diameterOfTree(vector<vector<int>> &adj)
+{
+    int n = adj.size();
+    bool vis[n];
+    int dis[n];
+    memset(vis, false, sizeof(vis));
+    memset(dis, 0, sizeof(dis));
+    // dfs(root, 0)
+    dfs(1, 0, vis, dis, adj);
+    memset(vis, false, sizeof(vis));
+    memset(dis, 0, sizeof(dis));
+    dfs(node, 0, vis, dis, adj);
+    return mx;
+}

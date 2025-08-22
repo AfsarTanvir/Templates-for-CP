@@ -1,0 +1,14 @@
+// Generating All Divisors (n log n)
+const int N = 2e5 + 9;
+vector<vector<int>> allDivisors(N);
+void generatingAllDivisors()
+{
+    int i, j;
+    for (i = 1; i < N; ++i)
+    {
+        for (j = i; j <= N; j += i)
+        {
+            allDivisors[j].push_back(i);
+        }
+    }
+}

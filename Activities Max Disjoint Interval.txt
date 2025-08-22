@@ -1,0 +1,20 @@
+vector<vector<long long>> printMaxActivities(vector<vector<long long>> &v1, int n)
+{
+    //v1.push_back({index[i], start[i], finish[i]});
+    // index[]  array is at 0 index of v1
+    // start[]  array is at 1 index of v1
+    // finish[] array is at 2 index of v1
+	int i=0, j;
+    vector<vector<long long>> ansVector;
+    sort(v1.begin(), v1.end(), [&](vector<long long> &a, vector<long long> &b){
+        return a[2]<b[2];
+    });
+    ansVector.push_back({v1[i][0], v1[i][1], v1[i][2]});
+	for (j = 1; j < n; j++) {
+		if(v1[j][1] >= v1[i][2]) {
+			ansVector.push_back({v1[j][0], v1[j][1], v1[j][2]});
+            i = j;
+		}
+	}
+    return ansVector;
+}

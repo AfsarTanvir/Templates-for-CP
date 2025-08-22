@@ -1,0 +1,30 @@
+// Function to return Breadth First Traversal of given graph.
+vector<int> bfsOfGraph(int V, vector<int> adj[])
+{
+    bool vis[V] = {false};
+    vis[0] = true; // here we define source node true
+    queue<int> q;
+    // push the initial starting node
+    q.push(0);
+    vector<int> bfs;
+    // iterate till the queue is empty
+    while (!q.empty())
+    {
+        // get the topmost element in the queue
+        int node = q.front();
+        q.pop();
+        bfs.push_back(node);
+        // traverse for all its neighbors
+        for (auto it : adj[node])
+        {
+            // if the neighbor has previously not been visited,
+            // store in Queue and mark as visited
+            if (!vis[it])
+            {
+                vis[it] = true;
+                q.push(it);
+            }
+        }
+    }
+    return bfs;
+}

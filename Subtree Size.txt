@@ -1,0 +1,23 @@
+// Subtree Size
+// subtreeSizeCall(v1)
+int dfs(int i, bool vis[], vector<int> &subtreeSize, vector<vector<int>> &adj)
+{
+    vis[i] = true;
+    int child = 1;
+    for (auto &c : adj[i])
+    {
+        if (!vis[c])
+            child += dfs(c, vis, subtreeSize, adj);
+    }
+    return subtreeSize[i] = child;
+}
+vector<int> subtreeSizeCall(vector<vector<int>> &adj)
+{
+    int n = adj.size();
+    bool vis[n];
+    vector<int> subtreeSize(n);
+    memset(vis, false, sizeof(vis));
+    // dfs(root)
+    n = dfs(0, vis, subtreeSize, adj);
+    return subtreeSize;
+}

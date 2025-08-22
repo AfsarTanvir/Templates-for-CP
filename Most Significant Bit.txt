@@ -1,0 +1,5 @@
+int mostSignificantBit(ll x)
+{
+    return (int) log2(x);
+    // floor(log2(x)) will be MSB index no. of x
+}

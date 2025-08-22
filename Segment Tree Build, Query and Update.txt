@@ -1,0 +1,73 @@
+const int N = 2e5 + 2;
+long long segmentTreeArray[N], tree[4 * N];
+// segment Tree Array = given array
+// tree = we build the array
+// to call this function build(1, 0, n-1)
+// node can't start from 0
+void build(int node, int start, int end_)
+{
+    if (start == end_)
+    {
+        tree[node] = segmentTreeArray[start];
+        return;
+    }
+
+    int mid = (start + end_) >> 1;
+    build((node << 1), start, mid);
+    build((node << 1) + 1, mid + 1, end_);
+
+    // modify
+    tree[node] = tree[(node << 1)] + tree[(node << 1) + 1];
+    // tree[node] = max(tree[(node<<1)], tree[(node<<1)+1]);
+    // tree[node] = min(tree[(node<<1)], tree[(node<<1)+1]);
+}
+
+// to find sum from l to r
+// query(1, 0, n - 1, l-1, r-1);
+long long query(int node, int start, int en, const int &l, const int &r)
+{
+    // l...r > start...en    start...en < l...r no overlap
+    if (start > r || en < l)
+    {
+        return 0LL;
+    }
+    // l start...en r complete overlap
+    if (l <= start && r >= en)
+    {
+        return tree[node];
+    }
+    // start  l   en   r partial overlap
+    // l  start r  en
+    int mid = (start + en) >> 1;
+    long long q1 = query(node << 1, start, mid, l, r);
+    long long q2 = query((node << 1) + 1, mid + 1, en, l, r);
+
+    return q1 + q2;
+    // return max(q1, q2);
+    // return min(q1, q2);
+}
+
+// to update query
+// update(1, 0, n - 1, index-1, val);
+void update(int node, int st, int en, const int &idx, const long long &val)
+{
+    if (st == en)
+    {
+        segmentTreeArray[st] = val;
+        tree[node] = val;
+        return;
+    }
+    int mid = (st + en) >> 1;
+    if (idx <= mid)
+    {
+        update((node << 1), st, mid, idx, val);
+    }
+    else
+    {
+        update((node << 1) + 1, mid + 1, en, idx, val);
+    }
+
+    tree[node] = tree[(node << 1)] + tree[(node << 1) + 1];
+    // tree[node] = max(tree[(node<<1)], tree[(node<<1)+1]);
+    // tree[node] = min(tree[(node<<1)], tree[(node<<1)+1]);
+}

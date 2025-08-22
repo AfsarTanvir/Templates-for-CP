@@ -1,0 +1,76 @@
+long long kadaneAlorithm(vector<long long> &v1, long long &finalStart, long long &finalEnd)
+{
+    long long currentSum = 0, maxSum = LLONG_MIN, n = v1.size(), start = 0;
+    for (int i = 0; i < n; ++i)
+    {
+        currentSum += v1[i];
+        if (currentSum > maxSum)
+        {
+            maxSum = currentSum;
+            finalStart = start;
+            finalEnd = i;
+        }
+        if (currentSum < 0)
+        {
+            currentSum = 0;
+            start = i + 1;
+        }
+    }
+    return maxSum;
+}
+vector<long long> maximumSumSubmatrix(int r, int c, vector<vector<long long>> &v1)
+{
+    long long **prefix = new long long *[r];
+    for (int i = 0; i < r; ++i)
+    {
+        prefix[i] = new long long;
+        for (int j = 0; j < c; ++j)
+        {
+            prefix[i][j] = 0;
+        }
+    }
+    for (int i = 0; i < r; ++i)
+    {
+        for (int j = 0; j < c; ++j)
+        {
+            if (j == 0)
+            {
+                prefix[i][j] = v1[i][j];
+            }
+            else
+            {
+                prefix[i][j] = v1[i][j] + prefix[i][j - 1];
+            }
+        }
+    }
+    vector<long long> solution(5);
+    long long val, st, en, ans;
+    // long long maxSum = LLONG_MIN, startx, starty, endx, endy;
+    // solution[0,...,4] = {maxSum,start_x,start_y,end_x,end_y}
+    solution[0] = LLONG_MIN;
+    for (int i = 0; i < c; ++i)
+    {
+        for (int j = i; j < c; ++j)
+        {
+            vector<long long> v2;
+            for (int k = 0; k < r; ++k)
+            {
+                if (i == 0)
+                {
+                    val = prefix[k][j];
+                }
+                else
+                {
+                    val = prefix[k][j] - prefix[k][i - 1];
+                }
+                v2.push_back(val);
+            }
+            ans = kadaneAlorithm(v2, st, en);
+            if (ans > solution[0])
+            {
+                solution[0] = ans, solution[1] = st, solution[2] = i, solution[3] = en, solution[4] = j;
+            }
+        }
+    }
+    return solution;
+}

@@ -1,0 +1,26 @@
+// number of combination
+int nCr(int n, int r)
+{
+    int i, ans = 1;
+    for (i = 2; i <= n; ++i)
+    {
+        ans *= i;
+        if (i <= r || i <= (n - r))
+            ans /= i;
+    }
+    if (r < (n - r))
+    {
+        for (i = 2; i <= r; ++i)
+        {
+            ans /= i;
+        }
+    }
+    else
+    {
+        for (i = 2; i <= n - r; ++i)
+        {
+            ans /= i;
+        }
+    }
+    return ans;
+}

@@ -1,0 +1,23 @@
+vector<long long> jobSequencingProblem(vector<vector<long long>> &v1, int n)
+    {
+        sort(v1.begin(), v1.end(), [&](vector<long long> &a, vector<long long> &b){
+            return a[1]<b[1];
+        });
+        priority_queue<vector<long long>, vector<vector<long long>>, CustomComparator> pq;
+        long long mxProfit = 0, numberOfWorkDone = 0;
+        int slot_available;
+        for (int i = n-1; i >= 0; --i)
+        {
+            slot_available = v1[i][1] - (i>0?v1[i - 1][1]:0);
+            pq.push(v1[i]);
+            while (slot_available>0 && pq.size()>0)
+            {
+                vector<long long> v2 = pq.top();
+                pq.pop();
+                mxProfit += v2[2];
+                numberOfWorkDone++;
+                slot_available--;
+            }
+        }
+        return {numberOfWorkDone, mxProfit};
+    }

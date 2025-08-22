@@ -1,0 +1,22 @@
+const int N = 2 * 1e5 + 10;
+long long dp[N], height[N];
+// remember to memset(dp, -1, sizeof(dp))
+// ending point is where frog is now
+// k is maximum length frog can jump
+long long DP_Jumps(long long int endingPoint, long long k)
+{
+    // base case
+    if (endingPoint <= 0)
+        return 0;
+    // if data is already exist.
+    if (dp[endingPoint] != -1)
+        return dp[endingPoint];
+    long long cost = 1e15;
+    for (int i = 1; i <= k; ++i)
+    {
+        if(endingPoint-i>=0)
+            cost = min(cost, DP_Jumps(endingPoint - i, k) + abs(height[endingPoint] - height[endingPoint - i]));
+    }
+    // return and store dating
+    return dp[endingPoint] = cost;
+}

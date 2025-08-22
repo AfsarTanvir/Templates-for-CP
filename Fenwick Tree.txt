@@ -1,0 +1,20 @@
+const int N = 1e6 + 5;
+ll fenWickTree[N];
+void update(ll i, ll k)
+{ // k is the number to add in the index i, not replaced
+    while (i <= n)
+    {
+        fenWickTree[i] += k;
+        i += i & -i;
+    }
+}
+ll query(ll i)
+{
+    ll ans = 0;
+    while (i > 0)
+    {
+        ans += fenWickTree[i];
+        i -= i & -i;
+    }
+    return ans;
+}

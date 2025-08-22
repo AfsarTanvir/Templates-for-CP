@@ -1,0 +1,102 @@
+// How to create -> SparseTable st(vector__);
+// Query Example -> st.queryMin(0, 5); st.queryMax(0, 9); st.queryGCD(4, 9); st.queryLCM(2, 4);
+// Build Sparse Table for Min, Max, GCD, and LCM Queries == 0 based index --l, --r before each query
+class SparseTable
+{
+public:
+    vector<vector<ll>> minTable; // For minimum queries
+    vector<vector<ll>> maxTable; // For maximum queries
+    vector<vector<ll>> gcdTable; // For GCD queries
+    vector<vector<ll>> lcmTable; // For LCM queries
+    vector<ll> logValues;
+    ll n;
+
+    // Constructor to build the sparse table
+    SparseTable(const vector<ll> &arr)
+    {
+        n = arr.size();
+        logValues.resize(n + 1);
+        buildLogValues();
+        buildTables(arr);
+    }
+
+    // Precompute logarithms for range sizes
+    void buildLogValues()
+    {
+        logValues[1] = 0;
+        for (ll i = 2; i <= n; ++i)
+        {
+            logValues[i] = logValues[i / 2] + 1;
+        }
+    }
+
+    // Build min, max, GCD, and LCM sparse tables
+    void buildTables(const vector<ll> &arr)
+    {
+        ll maxLog = logValues[n] + 1;
+        minTable.assign(n, vector<ll>(maxLog));
+        maxTable.assign(n, vector<ll>(maxLog));
+        gcdTable.assign(n, vector<ll>(maxLog));
+        lcmTable.assign(n, vector<ll>(maxLog));
+
+        // Initialize the first level of the tables with the array elements
+        for (ll i = 0; i < n; ++i)
+        {
+            minTable[i][0] = arr[i];
+            maxTable[i][0] = arr[i];
+            gcdTable[i][0] = arr[i];
+            lcmTable[i][0] = arr[i];
+        }
+
+        // Fill the min, max, GCD, and LCM sparse tables
+        for (ll j = 1; (1 << j) <= n; ++j)
+        {
+            for (ll i = 0; i + (1 << j) <= n; ++i)
+            {
+                minTable[i][j] = min(minTable[i][j - 1], minTable[i + (1 << (j - 1))][j - 1]);
+                maxTable[i][j] = max(maxTable[i][j - 1], maxTable[i + (1 << (j - 1))][j - 1]);
+                gcdTable[i][j] = __gcd(gcdTable[i][j - 1], gcdTable[i + (1 << (j - 1))][j - 1]);
+                lcmTable[i][j] = lcm(lcmTable[i][j - 1], lcmTable[i + (1 << (j - 1))][j - 1]);
+            }
+        }
+    }
+
+    // Query the sparse table for the minimum in range [L, R]
+    ll queryMin(ll L, ll R)
+    {
+        ll length = R - L + 1;
+        ll log = logValues[length];
+        return min(minTable[L][log], minTable[R - (1 << log) + 1][log]);
+    }
+
+    // Query the sparse table for the maximum in range [L, R]
+    ll queryMax(ll L, ll R)
+    {
+        ll length = R - L + 1;
+        ll log = logValues[length];
+        return max(maxTable[L][log], maxTable[R - (1 << log) + 1][log]);
+    }
+
+    // Query the sparse table for the GCD in range [L, R]
+    ll queryGCD(ll L, ll R)
+    {
+        ll length = R - L + 1;
+        ll log = logValues[length];
+        return __gcd(gcdTable[L][log], gcdTable[R - (1 << log) + 1][log]);
+    }
+
+    // Query the sparse table for the LCM in range [L, R]
+    ll queryLCM(ll L, ll R)
+    {
+        ll length = R - L + 1;
+        ll log = logValues[length];
+        return lcm(lcmTable[L][log], lcmTable[R - (1 << log) + 1][log]);
+    }
+
+private:
+    // Helper function to calculate LCM
+    ll lcm(ll a, ll b)
+    {
+        return (a / __gcd(a, b)) * b;
+    }
+};

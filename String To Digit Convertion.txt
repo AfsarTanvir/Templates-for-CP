@@ -1,0 +1,16 @@
+long long int stringToDigit(string str)
+{
+    // return stoi(str); // for integer
+    // return stoull(str); // for unsigned long long
+    return stoll(str); // for long long
+
+    // other manual way
+    ll result = 0, i = 0;
+    bool nag = false;
+    nag = i = str[i] == '-';
+    for (; i < str.size(); ++i)
+    {
+        result = result * 10 + (str[i] - '0');
+    }
+    return nag ? -result : result;
+}

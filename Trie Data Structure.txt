@@ -1,0 +1,10 @@
+struct Trie
+{
+    struct Trie *children[10];
+    bool isend;
+    Trie(){
+        memset(children, 0,sizeof(children));
+        isend = false;
+    }
+};
+struct Trie *root;

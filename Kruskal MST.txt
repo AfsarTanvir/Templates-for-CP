@@ -1,0 +1,26 @@
+// auto v2 = kruskal_MST(v1, n);
+int total_cost;
+vector<array<int, 3>> kruskal_MST(vector<vector<array<int, 2>>> &adj, int noNode)
+{
+    vector<array<int, 3>> gra, mst;
+    int u, v, w, n = adj.size(), i, j;
+    disjointSet(n);
+    for (i = 1; i < n; i++)
+    {
+        for (auto &[v, w] : adj[i])
+        {
+            gra.push_back({w, i, v});
+        }
+    }
+    sort(gra.begin(), gra.end());
+    total_cost = 0;
+    for (auto &[w, u, v] : gra)
+    {
+        if (findParent(u) == findParent(v))
+            continue;
+        unionBySize(u, v);
+        total_cost += w;
+        mst.push_back({w, u, v});
+    }
+    return mst;
+}

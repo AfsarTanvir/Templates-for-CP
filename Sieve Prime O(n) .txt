@@ -1,0 +1,19 @@
+// Sieve Prime O(n)
+vector<bool> primeSieve(int N) {
+    vector<bool> isPrimeNumber(N, true);
+    isPrimeNumber[0] = isPrimeNumber[1] = false;
+    for (int i = 4; i < N; i += 2)
+        isPrimeNumber[i] = false;
+    for (int i = 9; i < N; i += 6)
+        isPrimeNumber[i] = false;
+    for (int i = 1; 6 * i < N; ++i) {
+        int x = 6 * i - 1, y = 6 * i + 1;
+        if (isPrimeNumber[x])
+            for (int j = 3 * x; j < N; j = x + x + j)
+                isPrimeNumber[j] = false;
+        if (isPrimeNumber[y])
+            for (int j = 3 * y; j < N; j = y + y + j)
+                isPrimeNumber[j] = false;
+    }
+    return isPrimeNumber;
+}

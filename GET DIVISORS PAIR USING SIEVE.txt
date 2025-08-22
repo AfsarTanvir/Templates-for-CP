@@ -1,0 +1,45 @@
+// Sieve Prime O(n)
+// Sieve Prime (n log log n)
+const int N = 1e3 + 9;
+bool isPrime[N];
+vector<int> primeNumbers;
+void sieve()
+{
+    int i, j;
+    isPrime[0] = isPrime[1] = true;
+    for (i = 2; i < N; ++i)
+    {
+        if (!isPrime[i])
+        {
+            primeNumbers.push_back(i);
+            for (j = i * i; j < N; j += i)
+            {
+                isPrime[j] = true;
+            }
+        }
+    }
+}
+// getting prime_factors
+// vector<pair<int, int>> v1 = get_divisors(n);
+vector<pair<int, int>> get_divisors(int x)
+{
+    vector<pair<int, int>> divisors;
+    for (int p : primeNumbers)
+    {
+        if (x % p == 0)
+        {
+            int cnt = 0;
+            while (x % p == 0)
+            {
+                x = x / p;
+                ++cnt;
+            }
+            divisors.push_back({p, cnt});
+        }
+    }
+    if (x > 1)
+    {
+        divisors.push_back({x, 1});
+    }
+    return divisors;
+}

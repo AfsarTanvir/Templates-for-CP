@@ -1,0 +1,62 @@
+// DSU TC (alpha * n)
+const int N = 1e5 + 10;
+vector<int> parent(N), sizeDSU(N), rankDSU(N);
+void disjointSet(int n)
+{
+    rankDSU.resize(n + 1);
+    parent.resize(n + 1);
+    sizeDSU.resize(n + 1);
+    for (int i = 0; i <= n; i++)
+    {
+        parent[i] = i;
+        sizeDSU[i] = 1;
+        rankDSU[i] = 0;
+    }
+}
+void makeDSU(int i)
+{
+    parent[i] = i;
+    sizeDSU[i] = 1;
+}
+
+int findParent(int p)
+{
+    if (p == parent[p])
+        return p;
+    // Path Compression
+    return parent[p] = findParent(parent[p]);
+}
+
+void unionBySize(int a, int b)
+{
+    int parentOfa = findParent(a);
+    int parentOfb = findParent(b);
+    if (parentOfa != parentOfb)
+    {
+        // Union by size
+        if (sizeDSU[parentOfa] < sizeDSU[parentOfb])
+            swap(parentOfa, parentOfb);
+        parent[parentOfb] = parentOfa;
+        sizeDSU[parentOfa] += sizeDSU[parentOfb];
+    }
+}
+void unionByRank(int a, int b)
+{
+    int parentOfa = findParent(a);
+    int parentOfb = findParent(b);
+    if (parentOfa == parentOfb)
+        return;
+    if (rankDSU[parentOfa] < rankDSU[parentOfb])
+    {
+        parent[parentOfa] = parentOfb;
+    }
+    else if (rankDSU[parentOfb] < rankDSU[parentOfa])
+    {
+        parent[parentOfb] = parentOfa;
+    }
+    else
+    {
+        parent[parentOfb] = parentOfa;
+        rankDSU[parentOfa]++;
+    }
+}

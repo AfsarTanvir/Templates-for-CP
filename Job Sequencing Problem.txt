@@ -1,0 +1,25 @@
+vector<long long> jobSequencingProblem(vector<vector<long long>> &v1, int n){
+        // v1 is vector first index -> id
+        // v1 is vector second index -> dead Line
+        // v1 is vector profit index -> profit
+        sort(v1.begin(), v1.end(), [&](vector<long long> &a, vector<long long> &b){
+            return a[2]>b[2];
+        });
+        long long mx_dead=-1;
+        for(int i=0; i<n; ++i){
+            if(mx_dead<v1[i][1]) mx_dead = v1[i][1];
+        }
+        vector<int> v2(mx_dead+1, -1);
+        long long mxProfit=0, numberOfWorkDone=0;
+        for(int i=0; i<n; ++i){
+            for(int j=v1[i][1]; j>0; --j){
+                if(v2[j] == -1){
+                    v2[j] = v1[i][0];
+                    ++numberOfWorkDone;
+                    mxProfit += v1[i][2];
+                    break;
+                }
+            }
+        }
+        return {numberOfWorkDone, mxProfit};
+    }

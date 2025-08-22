@@ -1,0 +1,44 @@
+// findingPrimeFactors();
+const int N = 2020;
+vector<ll> primeFactors[N];
+int primeNumbers[N];
+bool mp[N];
+bool isPrime(ll n)
+{
+    if (n <= 1)
+        return false;
+    else if (n <= 3)
+        return true;
+    else if (n % 2 == 0 || n % 3 == 0)
+        return false;
+    for (int i = 5; i * i <= n; i += 6)
+    {
+        if (n % i == 0 || n % (i + 2) == 0)
+            return false;
+    }
+    return true;
+}
+void findingPrimeFactors()
+{
+    int i,j;
+    mp[2] = true;
+    mp[3] = true;
+    for (i = 1; 6 * i - 1 <= 1000; ++i)
+    {
+        ll a = (6 * i - 1), b = (6 * i + 1);
+        if (isPrime(a))
+            mp[a] = true;
+        if (isPrime(b))
+            mp[b] = true;
+    }
+    for (i = 1; i <= 1000; ++i)
+    {
+        if (mp[i])
+        {
+            for (j = i + i; j <= 1000; j += i)
+            {
+                primeFactors[j].push_back(i);
+            }
+        }
+    }
+}

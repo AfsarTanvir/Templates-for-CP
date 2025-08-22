@@ -1,0 +1,20 @@
+// Sieve Prime (n log log n) 
+const int N = 1e6 + 9;
+bool isPrime[N];
+vector<int> primeNumbers;
+void sieve()
+{
+    int i, j;
+    isPrime[0] = isPrime[1] = true;
+    for (i = 2; i < N; ++i)
+    {
+        if (!isPrime[i])
+        {
+            primeNumbers.push_back(i);
+            for (j = i * i; j < N; j += i)
+            {
+                isPrime[j] = true;
+            }
+        }
+    }
+}

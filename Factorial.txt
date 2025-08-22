@@ -1,0 +1,10 @@
+const int N = 3e5 + 10, mod = 1e9 + 7;
+ll fact[N];
+void factorial()
+{
+  fact[0] = 1;
+  for (int i = 1; i < N; ++i)
+  {
+    fact[i] = (fact[i - 1] * i) % mod;
+  }
+}

@@ -1,0 +1,10 @@
+// number of permutation of n out of r selection
+int nPr(int n, int r)
+{
+    int i, ans = 1;
+    for (i = (n - r) + 1; i <= n; ++i)
+    {
+        ans *= i;
+    }
+    return ans;
+}

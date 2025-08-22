@@ -1,0 +1,22 @@
+void bfs_distance(ll root, vector<ll> &distance)
+{
+   ll x;
+   queue<ll> q;
+   q.push(root);
+   distance[root] = 0;
+   visited.assign(N, false);
+   while (!q.empty())
+   {
+      ll current = q.front();
+      q.pop();
+      visited[current] = true;
+      for (auto child : graph[current])
+      {
+         if (!visited[child])
+         {
+            q.push(child);
+            distance[child] = distance[current] + 1;
+         }
+      }
+   }
+}

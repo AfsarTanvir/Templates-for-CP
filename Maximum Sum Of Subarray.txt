@@ -1,0 +1,13 @@
+// cout << maximumSumOfSubarray(v1) << '\n';
+int maximumSumOfSubarray(int v1[])
+{
+    int sum2 = INT_MIN, i, sum1 = 0, n = sizeof(v1);
+    for (i = 0; i < n; ++i)
+    {
+        sum1 += v1[i];
+        sum2 = max(sum2, sum1);
+        if (sum1 < 0)
+            sum1 = 0;
+    }
+    return sum2;
+}

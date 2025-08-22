@@ -1,0 +1,23 @@
+// A is sorted vector
+// if there any two value with sum X return 1 nor 0
+int isPairSum_TwoPointer(vector<int> &A, int X)
+{
+    int i = 0;            // represents first pointer
+    int j = A.size() - 1; // represents second pointer
+    while (i < j)
+    {
+        if (A[i] + A[j] == X)
+            return 1; // If we find a pair
+        // If sum of elements at current
+        // pointers is less, we move towards
+        // higher values by doing i++
+        else if (A[i] + A[j] < X)
+            i++;
+        // If sum of elements at current
+        // pointers is more, we move towards
+        // lower values by doing j--
+        else
+            j--;
+    }
+    return 0;
+}

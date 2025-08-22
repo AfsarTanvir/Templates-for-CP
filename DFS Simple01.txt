@@ -1,0 +1,9 @@
+void dfs(ll vertex)
+{
+    visit[vertex] = true;
+    for (auto child : graph[vertex])
+    {
+        if (!visit[child])
+            dfs(child);
+    }
+}

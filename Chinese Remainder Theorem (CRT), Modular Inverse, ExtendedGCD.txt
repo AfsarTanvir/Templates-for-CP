@@ -1,0 +1,46 @@
+// Function to calculate gcd and extended gcd
+ll extendedGCD(ll a, ll b, ll &x, ll &y)
+{
+    if (b == 0)
+    {
+        x = 1;
+        y = 0;
+        return a;
+    }
+    ll x1, y1;
+    ll gcd = extendedGCD(b, a % b, x1, y1);
+    x = y1;
+    y = x1 - (a / b) * y1;
+    return gcd;
+}
+
+// Function to compute modular inverse of `a` under modulo `m`
+ll modularInverse(ll a, ll m)
+{
+    ll x, y;
+    ll gcd = extendedGCD(a, m, x, y);
+    if (gcd != 1)
+    {
+        return -1;
+    }
+    return (x % m + m) % m;
+}
+
+// Chinese Remainder Theorem implementation
+ll chineseRemainderTheorem(vector<ll> &rem, vector<ll> &num)
+{
+    ll prod = 1LL;
+    for (ll ni : num)
+        prod *= ni;
+
+    ll result = 0;
+    for (size_t i = 0; i < rem.size(); i++)
+    {
+        ll partialProd = prod / num[i];
+        ll inv = modularInverse(partialProd, num[i]); 
+
+        result += rem[i] * partialProd * inv;
+        result %= prod;
+    }
+    return (result + prod) % prod;
+}

@@ -1,0 +1,43 @@
+int dist[N];
+bool visited[N];
+// Multisource BFS Function
+void Multisource_BFS(vector<int> graph[], queue<int> q)
+{
+    while (!q.empty())
+    {
+        int k = q.front();
+        q.pop();
+        for (auto i : graph[k])
+        {
+            if (!visited[i])
+            {
+                // Pushing the adjacent unvisited vertices
+                // with distance from current source = this
+                // vertex's distance + 1
+                q.push(i);
+                dist[i] = dist[k] + 1;
+                visited[i] = true;
+            }
+        }
+    }
+}
+
+// This function calculates the distance of each
+// vertex from nearest source
+void nearestTown(vector<int> graph[], int n, int sources[], int s)
+{
+    // Create a queue for BFS
+    queue<int> q;
+    // Mark all the source vertices as visited and enqueue it
+    for (int i = 0; i < s; i++)
+    {
+        q.push(sources[i]);
+        visited[sources[i]] = true;
+    }
+    Multisource_BFS(graph, q);
+    // Printing the distances
+    for (int i = 1; i <= n; i++)
+    {
+        cout << i << " " << dist[i] << endl;
+    }
+}
